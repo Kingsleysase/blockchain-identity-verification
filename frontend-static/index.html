@@ -322,7 +322,7 @@ async function viewIdentity(id){
   try{
     const r = await fetch(API+'/api/identities/'+id,{headers:{'Authorization':'Bearer '+getToken()}});
     const i = await r.json();
-    const identity = i.identity || i.identities?.[0] || i;
+    const identity = i.identity || i;
     card.innerHTML=`
       <h3 style="margin-bottom:16px;font-size:16px">Identity #${identity.identity_id}</h3>
       <div class="info-row"><span class="info-label">NIN</span><span class="info-val">${identity.local_identifier||'–'}</span></div>
