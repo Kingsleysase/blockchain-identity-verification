@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth');
 const identityRoutes = require('./routes/identities');
 
 const app = express();
-app.use(cors({ origin: ["https://blockchain-verification.lovable.app", "http://localhost:3000"], credentials: true }));
+app.use(cors({ origin: ["https://blockchain-verification.lovable.app", "https://blockchainidentifyverify.lovable.app", "http://localhost:3000"], credentials: true }));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
