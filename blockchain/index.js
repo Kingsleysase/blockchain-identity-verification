@@ -1,4 +1,8 @@
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
+
+const CHAIN_FILE = path.join(__dirname, '../backend/blockchain_data.json');
 
 class Block {
   constructor(index, timestamp, data, previousHash = '') {
@@ -19,7 +23,21 @@ class Block {
 
 class Blockchain {
   constructor() {
-    this.chain = [this.createGenesisBlock()];
+    this.chain = this.loadChain();
+  }
+
+  loadChain() {
+    try {
+      if (fs.existsSync(CHAIN_FILE)) {
+        const data = JSON.parse(fs.readFileSync(CHAIN_FILE, 'utf8'));
+        return data.map(b => Object.assign(new Block(0,'',{},''), b));
+      }
+    } catch(e) {}
+    return [this.createGenesisBlock()];
+  }
+
+  saveChain() {
+    fs.writeFileSync(CHAIN_FILE, JSON.stringify(this.chain, null, 2));
   }
 
   createGenesisBlock() {
@@ -38,6 +56,7 @@ class Blockchain {
       this.getLatestBlock().hash
     );
     this.chain.push(block);
+    this.saveChain();
     return block;
   }
 
