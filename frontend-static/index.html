@@ -8,405 +8,594 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
 body{display:flex;min-height:100vh;background:#f8fafc}
-#sidebar{width:260px;min-height:100vh;background:#0f172a;color:#fff;display:flex;flex-direction:column;padding:24px 0;position:fixed;top:0;left:0;bottom:0;z-index:100}
-#sidebar .logo{padding:0 24px 32px;font-size:18px;font-weight:700;color:#fff;border-bottom:1px solid #1e293b}
-#sidebar .logo span{color:#3b82f6}
-#sidebar nav{flex:1;padding:24px 0}
-#sidebar nav a{display:block;padding:12px 24px;color:#94a3b8;text-decoration:none;font-size:14px;transition:all .2s}
-#sidebar nav a:hover,#sidebar nav a.active{background:#1e293b;color:#fff;border-left:3px solid #3b82f6}
-#sidebar .user-section{padding:16px 24px;border-top:1px solid #1e293b;font-size:13px;color:#64748b}
-#sidebar .user-section .email{color:#94a3b8;margin-bottom:8px;word-break:break-all}
-#sidebar .logout-btn{background:#ef4444;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;width:100%}
-#main{margin-left:260px;flex:1;padding:32px}
+#sidebar{width:260px;min-height:100vh;background:#0f172a;color:#fff;display:flex;flex-direction:column;padding:0;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.logo{padding:24px;font-size:16px;font-weight:700;color:#fff;border-bottom:1px solid #1e293b;line-height:1.4}
+.logo span{color:#3b82f6}
+nav{flex:1;padding:16px 0}
+nav a{display:flex;align-items:center;gap:10px;padding:12px 24px;color:#94a3b8;text-decoration:none;font-size:14px;transition:all .2s;cursor:pointer;border-left:3px solid transparent}
+nav a:hover,nav a.active{background:#1e293b;color:#fff;border-left-color:#3b82f6}
+.user-box{padding:16px 24px;border-top:1px solid #1e293b}
+.user-email{font-size:12px;color:#64748b;margin-bottom:8px;word-break:break-all}
+.logout-btn{width:100%;padding:8px;background:#ef4444;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500}
+.logout-btn:hover{background:#dc2626}
+#main{margin-left:260px;flex:1;padding:32px;min-height:100vh}
 .page{display:none}.page.active{display:block}
-.card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:24px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
-.stat-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.1);text-align:center}
-.stat-card .num{font-size:36px;font-weight:700;color:#2563eb}
-.stat-card .label{font-size:14px;color:#64748b;margin-top:4px}
 h1{font-size:24px;font-weight:700;color:#0f172a;margin-bottom:4px}
-.subtitle{color:#64748b;font-size:14px;margin-bottom:24px}
+.sub{color:#64748b;font-size:14px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.stat{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.08);text-align:center}
+.stat .n{font-size:40px;font-weight:700;color:#2563eb}
+.stat .l{font-size:13px;color:#64748b;margin-top:4px}
+.stat .n.green{color:#16a34a}.stat .n.red{color:#dc2626}
+.card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:20px}
 table{width:100%;border-collapse:collapse;font-size:14px}
-th{text-align:left;padding:12px 16px;background:#f1f5f9;color:#475569;font-weight:600;border-bottom:2px solid #e2e8f0}
-td{padding:12px 16px;border-bottom:1px solid #f1f5f9;color:#334155}
+th{text-align:left;padding:10px 14px;background:#f1f5f9;color:#475569;font-weight:600;font-size:13px;border-bottom:2px solid #e2e8f0}
+td{padding:11px 14px;border-bottom:1px solid #f1f5f9;color:#334155;vertical-align:middle}
+tr:last-child td{border-bottom:none}
 tr:hover td{background:#f8fafc}
-.badge{padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
 .badge.active{background:#dcfce7;color:#16a34a}
 .badge.revoked{background:#fee2e2;color:#dc2626}
-.btn{padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.btn{padding:7px 14px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
 .btn-blue{background:#2563eb;color:#fff}.btn-blue:hover{background:#1d4ed8}
 .btn-red{background:#ef4444;color:#fff}.btn-red:hover{background:#dc2626}
 .btn-gray{background:#e2e8f0;color:#475569}.btn-gray:hover{background:#cbd5e1}
+.btn-lg{padding:10px 20px;font-size:14px}
 .form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:14px;font-weight:500;color:#374151;margin-bottom:6px}
-.form-group input{width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;transition:border .2s}
-.form-group input:focus{border-color:#2563eb}
+label{display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:6px}
+input[type=text],input[type=email],input[type=password],input[type=date]{width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:8px;font-size:14px;outline:none;transition:border .2s;background:#fff}
+input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
 .alert{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px}
 .alert.success{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
 .alert.error{background:#fee2e2;color:#dc2626;border:1px solid #fecaca}
 .alert.warning{background:#fef3c7;color:#d97706;border:1px solid #fde68a}
-.success-card{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:24px;margin-top:16px}
-.success-card h3{color:#16a34a;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.info-row{display:flex;flex-direction:column;margin-bottom:12px}
-.info-row .info-label{font-size:12px;color:#64748b;font-weight:600;text-transform:uppercase;margin-bottom:2px}
-.info-row .info-val{font-size:14px;color:#0f172a;word-break:break-all}
-#qr-container,#qr-detail-container,#qr-verify-container{margin-top:16px}
-.verify-result{text-align:center;padding:32px;border-radius:12px;margin-top:16px}
-.verify-result .icon{font-size:48px;margin-bottom:12px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.success-box{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:24px}
+.success-box h3{color:#16a34a;font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.info-item{margin-bottom:12px}
+.info-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.info-val{font-size:13px;color:#0f172a;word-break:break-all;font-family:monospace}
+.info-val.normal{font-family:inherit}
+.verify-result{text-align:center;padding:36px 24px;border-radius:12px;margin-top:20px}
+.verify-result .icon{font-size:56px;margin-bottom:12px}
 .verify-result h2{font-size:22px;font-weight:700;margin-bottom:8px}
-.verify-result.success-r{background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a}
-.verify-result.revoked-r{background:#fee2e2;border:1px solid #fecaca;color:#dc2626}
-.verify-result.notfound-r{background:#fef3c7;border:1px solid #fde68a;color:#d97706}
-/* Auth pages */
-#auth-wrapper{display:none;align-items:center;justify-content:center;min-height:100vh;background:#f8fafc;width:100%}
-#auth-wrapper.active{display:flex}
-.auth-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:420px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
-.auth-card .auth-logo{text-align:center;margin-bottom:24px}
-.auth-card .auth-logo .icon{font-size:40px}
-.auth-card h2{text-align:center;font-size:22px;font-weight:700;color:#0f172a;margin-bottom:4px}
-.auth-card .auth-sub{text-align:center;color:#64748b;font-size:14px;margin-bottom:24px}
-.auth-card .link{color:#2563eb;cursor:pointer;text-decoration:underline}
-.btn-full{width:100%;padding:12px;font-size:15px}
-.loading{opacity:.6;pointer-events:none}
+.verify-result p{font-size:14px;opacity:.8}
+.vr-success{background:#f0fdf4;border:1.5px solid #bbf7d0;color:#15803d}
+.vr-revoked{background:#fff1f2;border:1.5px solid #fecaca;color:#be123c}
+.vr-notfound{background:#fffbeb;border:1.5px solid #fde68a;color:#92400e}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.qr-box{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px}
+/* AUTH */
+#auth-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:#f8fafc;width:100%;position:fixed;top:0;left:0;z-index:200}
+#auth-screen.show{display:flex}
+.auth-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:420px;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.auth-logo{text-align:center;margin-bottom:8px;font-size:36px}
+.auth-title{text-align:center;font-size:20px;font-weight:700;color:#0f172a;margin-bottom:4px}
+.auth-sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:24px}
+.auth-link{text-align:center;font-size:13px;color:#64748b;margin-top:16px}
+.auth-link span{color:#2563eb;cursor:pointer;font-weight:500}
+.auth-link span:hover{text-decoration:underline}
+.btn-full{width:100%;padding:11px;font-size:15px;border-radius:8px}
+.disabled{opacity:.6;pointer-events:none}
+.hash-short{font-family:monospace;font-size:12px}
+.actions{display:flex;gap:6px}
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0;padding:16px}
+  .two-col,.detail-grid,.stats{grid-template-columns:1fr}
+  .hamburger{display:block}
+}
+.hamburger{display:none;position:fixed;top:16px;left:16px;z-index:300;background:#0f172a;color:#fff;border:none;border-radius:8px;padding:8px 10px;cursor:pointer;font-size:18px}
 </style>
 </head>
 <body>
 
-<!-- AUTH -->
-<div id="auth-wrapper">
+<!-- AUTH SCREEN -->
+<div id="auth-screen" class="show">
   <div class="auth-card">
-    <div class="auth-logo"><div class="icon">🔐</div></div>
-    <h2 id="auth-title">BlockchainIdentify_Verify</h2>
-    <p class="auth-sub" id="auth-sub">Sign in to your account</p>
+    <div class="auth-logo">🔐</div>
+    <div class="auth-title">BlockchainIdentify_Verify</div>
+    <div class="auth-sub" id="auth-sub">Sign in to your account</div>
     <div id="auth-alert"></div>
-    <div id="reg-username-group" class="form-group" style="display:none">
+    <div class="form-group" id="username-group" style="display:none">
       <label>Username</label>
-      <input type="text" id="reg-username" placeholder="Your username"/>
+      <input type="text" id="inp-username" placeholder="Your username"/>
     </div>
-    <div class="form-group"><label>Email</label><input type="email" id="auth-email" placeholder="admin@test.com"/></div>
-    <div class="form-group"><label>Password</label><input type="password" id="auth-password" placeholder="••••••••"/></div>
-    <button class="btn btn-blue btn-full" id="auth-btn" onclick="submitAuth()">Sign In</button>
-    <p style="text-align:center;margin-top:16px;font-size:14px;color:#64748b" id="auth-switch-text">
-      Don't have an account? <span class="link" onclick="switchAuth()">Register</span>
-    </p>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="inp-email" placeholder="admin@test.com"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="inp-password" placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-blue btn-full" id="auth-submit-btn" onclick="doAuth()">Sign In</button>
+    <div class="auth-link" id="auth-toggle-text">
+      Don't have an account? <span onclick="toggleAuth()">Register</span>
+    </div>
   </div>
 </div>
 
 <!-- APP -->
-<div id="app-wrapper" style="display:none;width:100%">
-  <div id="sidebar">
-    <div class="logo">🔗 <span>BlockchainIdentify</span>_Verify</div>
-    <nav>
-      <a href="#" class="active" onclick="showPage('dashboard',this)">📊 Dashboard</a>
-      <a href="#" onclick="showPage('register-identity',this)">➕ Register Identity</a>
-      <a href="#" onclick="showPage('identities',this)">📋 All Identities</a>
-      <a href="#" onclick="showPage('verify',this)">✅ Verify Identity</a>
-    </nav>
-    <div class="user-section">
-      <div class="email" id="sidebar-email"></div>
-      <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-  </div>
-  <div id="main">
-    <!-- DASHBOARD -->
-    <div class="page active" id="page-dashboard">
-      <h1>Dashboard</h1>
-      <p class="subtitle">Welcome to BlockchainIdentify_Verify</p>
-      <div class="stats">
-        <div class="stat-card"><div class="num" id="stat-total">–</div><div class="label">Total Identities</div></div>
-        <div class="stat-card"><div class="num" id="stat-active" style="color:#16a34a">–</div><div class="label">Active</div></div>
-        <div class="stat-card"><div class="num" id="stat-revoked" style="color:#dc2626">–</div><div class="label">Revoked</div></div>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:16px;font-size:16px">Recent Identities</h3>
-        <table><thead><tr><th>ID</th><th>NIN</th><th>Status</th><th>Date</th></tr></thead>
-        <tbody id="recent-tbody"><tr><td colspan="4" style="text-align:center;color:#94a3b8">Loading...</td></tr></tbody></table>
-      </div>
-      <div style="display:flex;gap:12px;margin-top:8px">
-        <button class="btn btn-blue" onclick="showPage('register-identity',null)">➕ Register New Identity</button>
-        <button class="btn btn-gray" onclick="showPage('verify',null)">✅ Verify Identity</button>
-      </div>
-    </div>
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
 
-    <!-- REGISTER IDENTITY -->
-    <div class="page" id="page-register-identity">
-      <h1>Register Identity</h1>
-      <p class="subtitle">Create a new blockchain-verified identity</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
-        <div class="card">
-          <div id="reg-alert"></div>
-          <div class="form-group"><label>NIN</label><input type="text" id="reg-nin" placeholder="11-digit NIN"/></div>
-          <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="Full legal name"/></div>
-          <div class="form-group"><label>Date of Birth</label><input type="date" id="reg-dob"/></div>
-          <button class="btn btn-blue" id="reg-btn" onclick="registerIdentity()">Register Identity</button>
-        </div>
-        <div id="reg-success" style="display:none">
-          <div class="success-card">
-            <h3>✅ Identity Registered</h3>
-            <div class="info-row"><span class="info-label">Transaction ID</span><span class="info-val" id="res-txid"></span></div>
-            <div class="info-row"><span class="info-label">Identity Hash</span><span class="info-val" id="res-hash"></span></div>
-            <div class="info-row"><span class="info-label">Status</span><span><span class="badge active">ACTIVE</span></span></div>
-            <div class="info-row"><span class="info-label">QR Code</span><div id="qr-container"></div></div>
-            <p style="font-size:12px;color:#64748b;margin-top:12px">Save this QR code — it's used to verify this identity.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ALL IDENTITIES -->
-    <div class="page" id="page-identities">
-      <h1>All Identities</h1>
-      <p class="subtitle">Manage blockchain identities</p>
-      <div class="card" style="padding:0;overflow:hidden">
-        <table><thead><tr><th>ID</th><th>NIN</th><th>Blockchain Hash</th><th>Transaction ID</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-        <tbody id="identities-tbody"><tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Loading...</td></tr></tbody></table>
-      </div>
-    </div>
-
-    <!-- IDENTITY DETAIL -->
-    <div class="page" id="page-identity-detail">
-      <div style="margin-bottom:16px"><button class="btn btn-gray" onclick="showPage('identities',null)">← Back to All Identities</button></div>
-      <h1>Identity Details</h1>
-      <p class="subtitle">Full blockchain identity record</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
-        <div class="card" id="detail-card"><p style="color:#94a3b8">Loading...</p></div>
-        <div class="card" id="detail-qr-card" style="display:none">
-          <h3 style="margin-bottom:16px;font-size:15px">QR Code</h3>
-          <div id="qr-detail-container"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- VERIFY -->
-    <div class="page" id="page-verify">
-      <h1>Verify Identity</h1>
-      <p class="subtitle">Check if an identity is valid on the blockchain</p>
-      <div class="card" style="max-width:600px">
-        <div class="form-group">
-          <label>Enter QR Payload or Transaction ID</label>
-          <input type="text" id="verify-input" placeholder="TXID:xxxxxxxx|RID:x"/>
-        </div>
-        <button class="btn btn-blue" id="verify-btn" onclick="verifyIdentity()">Verify</button>
-        <div id="verify-result"></div>
-      </div>
-    </div>
+<div id="sidebar">
+  <div class="logo">🔗 <span>BlockchainIdentify</span><br/>_Verify</div>
+  <nav>
+    <a onclick="goTo('dashboard')" id="nav-dashboard">📊 Dashboard</a>
+    <a onclick="goTo('register')" id="nav-register">➕ Register Identity</a>
+    <a onclick="goTo('identities')" id="nav-identities">📋 All Identities</a>
+    <a onclick="goTo('verify')" id="nav-verify">✅ Verify Identity</a>
+  </nav>
+  <div class="user-box">
+    <div class="user-email" id="user-email-display"></div>
+    <button class="logout-btn" onclick="doLogout()">Sign Out</button>
   </div>
 </div>
 
+<div id="main">
+
+  <!-- DASHBOARD -->
+  <div class="page" id="page-dashboard">
+    <h1>Dashboard</h1>
+    <p class="sub">Overview of the identity verification system</p>
+    <div class="stats">
+      <div class="stat"><div class="n" id="s-total">–</div><div class="l">Total Identities</div></div>
+      <div class="stat"><div class="n green" id="s-active">–</div><div class="l">Active</div></div>
+      <div class="stat"><div class="n red" id="s-revoked">–</div><div class="l">Revoked</div></div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:16px;color:#0f172a">Recent Registrations</h3>
+      <table>
+        <thead><tr><th>ID</th><th>NIN</th><th>Status</th><th>Registered</th></tr></thead>
+        <tbody id="recent-tbody"><tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8">Loading...</td></tr></tbody>
+      </table>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-blue btn-lg" onclick="goTo('register')">➕ Register New Identity</button>
+      <button class="btn btn-gray btn-lg" onclick="goTo('verify')">✅ Verify an Identity</button>
+    </div>
+  </div>
+
+  <!-- REGISTER IDENTITY -->
+  <div class="page" id="page-register">
+    <h1>Register Identity</h1>
+    <p class="sub">Create a new blockchain-verified identity record</p>
+    <div class="two-col">
+      <div class="card">
+        <div id="reg-alert"></div>
+        <div class="form-group">
+          <label>National Identification Number (NIN)</label>
+          <input type="text" id="r-nin" placeholder="Enter 11-digit NIN"/>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="r-name" placeholder="Enter full legal name"/>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="r-dob"/>
+        </div>
+        <button class="btn btn-blue btn-lg" id="reg-btn" onclick="doRegister()">Register Identity</button>
+      </div>
+      <div id="reg-result" style="display:none">
+        <div class="success-box">
+          <h3>✅ Identity Registered Successfully</h3>
+          <div class="info-item"><div class="info-label">Transaction ID</div><div class="info-val" id="res-txid"></div></div>
+          <div class="info-item"><div class="info-label">Identity Hash</div><div class="info-val" id="res-hash"></div></div>
+          <div class="info-item"><div class="info-label">Block Index</div><div class="info-val normal" id="res-block"></div></div>
+          <div class="info-item"><div class="info-label">Status</div><div><span class="badge active">ACTIVE</span></div></div>
+          <div class="info-item"><div class="info-label">QR Code</div><div id="reg-qr" style="margin-top:8px"></div></div>
+          <p style="font-size:12px;color:#64748b;margin-top:12px">💡 Save or print this QR code — it is used to verify this identity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL IDENTITIES -->
+  <div class="page" id="page-identities">
+    <h1>All Identities</h1>
+    <p class="sub">Manage all registered blockchain identity records</p>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NIN</th>
+            <th>Blockchain Hash</th>
+            <th>Transaction ID</th>
+            <th>Status</th>
+            <th>Date Registered</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="identities-tbody">
+          <tr><td colspan="7" style="text-align:center;padding:32px;color:#94a3b8">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- IDENTITY DETAIL -->
+  <div class="page" id="page-detail">
+    <div style="margin-bottom:20px">
+      <button class="btn btn-gray" onclick="goTo('identities')">← Back to All Identities</button>
+    </div>
+    <h1>Identity Details</h1>
+    <p class="sub">Full blockchain identity record</p>
+    <div class="detail-grid">
+      <div class="card" id="detail-card">
+        <p style="color:#94a3b8">Loading...</p>
+      </div>
+      <div class="card qr-box" id="detail-qr-card">
+        <div style="color:#94a3b8;font-size:13px">Loading QR code...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERIFY -->
+  <div class="page" id="page-verify">
+    <h1>Verify Identity</h1>
+    <p class="sub">Confirm an identity's blockchain status — no login required</p>
+    <div class="card" style="max-width:580px">
+      <div class="form-group">
+        <label>Enter QR Payload</label>
+        <input type="text" id="v-input" placeholder="TXID:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx|RID:x"/>
+        <p style="font-size:12px;color:#94a3b8;margin-top:6px">Scan the identity's QR code or paste the payload manually</p>
+      </div>
+      <button class="btn btn-blue btn-lg" id="verify-btn" onclick="doVerify()">🔍 Verify Identity</button>
+      <div id="verify-result"></div>
+    </div>
+  </div>
+
+</div><!-- end #main -->
+
 <script>
 const API = 'https://blockverify-backend-cyan.onrender.com';
-let isLogin = true;
+let isLoginMode = true;
 
-function getToken(){ return localStorage.getItem('token'); }
-function getUser(){ try{ return JSON.parse(localStorage.getItem('user')); }catch(e){ return null; } }
+/* ── AUTH HELPERS ── */
+const getToken = () => localStorage.getItem('biv_token');
+const getUser  = () => { try { return JSON.parse(localStorage.getItem('biv_user')); } catch(e){ return null; } };
 
-function switchAuth(){
-  isLogin = !isLogin;
-  document.getElementById('auth-title').textContent = isLogin ? 'BlockchainIdentify_Verify' : 'Create Account';
-  document.getElementById('auth-sub').textContent = isLogin ? 'Sign in to your account' : 'Register a new account';
-  document.getElementById('auth-btn').textContent = isLogin ? 'Sign In' : 'Create Account';
-  document.getElementById('reg-username-group').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('auth-switch-text').innerHTML = isLogin
-    ? 'Don\'t have an account? <span class="link" onclick="switchAuth()">Register</span>'
-    : 'Already have an account? <span class="link" onclick="switchAuth()">Sign In</span>';
+function toggleAuth() {
+  isLoginMode = !isLoginMode;
+  document.getElementById('auth-sub').textContent       = isLoginMode ? 'Sign in to your account' : 'Create a new account';
+  document.getElementById('auth-submit-btn').textContent = isLoginMode ? 'Sign In' : 'Create Account';
+  document.getElementById('username-group').style.display = isLoginMode ? 'none' : 'block';
+  document.getElementById('auth-toggle-text').innerHTML  = isLoginMode
+    ? 'Don\'t have an account? <span onclick="toggleAuth()">Register</span>'
+    : 'Already have an account? <span onclick="toggleAuth()">Sign In</span>';
   document.getElementById('auth-alert').innerHTML = '';
 }
 
-async function submitAuth(){
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const alertEl = document.getElementById('auth-alert');
-  if(!email || !password){ alertEl.innerHTML='<div class="alert error">Please fill all fields</div>'; return; }
-  document.getElementById('auth-btn').textContent = 'Please wait...';
-  document.getElementById('auth-btn').classList.add('loading');
-  try{
-    if(isLogin){
-      const r = await fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+async function doAuth() {
+  const email    = document.getElementById('inp-email').value.trim();
+  const password = document.getElementById('inp-password').value;
+  const alertEl  = document.getElementById('auth-alert');
+  if (!email || !password) { alertEl.innerHTML = '<div class="alert error">Please fill in all fields.</div>'; return; }
+
+  const btn = document.getElementById('auth-submit-btn');
+  btn.textContent = 'Please wait...'; btn.classList.add('disabled');
+
+  try {
+    if (isLoginMode) {
+      const r = await fetch(API + '/api/auth/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
       const d = await r.json();
-      if(!r.ok) throw new Error(d.message||'Login failed');
-      localStorage.setItem('token', d.token);
-      localStorage.setItem('user', JSON.stringify(d.user));
+      if (!r.ok) throw new Error(d.message || 'Login failed. Check your credentials.');
+      localStorage.setItem('biv_token', d.token);
+      localStorage.setItem('biv_user', JSON.stringify(d.user));
       showApp();
     } else {
-      const username = document.getElementById('reg-username').value.trim();
-      const r = await fetch(API+'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,email,password})});
+      const username = document.getElementById('inp-username').value.trim();
+      if (!username) { alertEl.innerHTML = '<div class="alert error">Please enter a username.</div>'; return; }
+      const r = await fetch(API + '/api/auth/register', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+      });
       const d = await r.json();
-      if(!r.ok) throw new Error(d.message||'Registration failed');
-      alertEl.innerHTML='<div class="alert success">Account created! Please sign in.</div>';
-      switchAuth();
+      if (!r.ok) throw new Error(d.message || 'Registration failed.');
+      alertEl.innerHTML = '<div class="alert success">Account created! You can now sign in.</div>';
+      toggleAuth();
     }
-  } catch(e){
-    alertEl.innerHTML=`<div class="alert error">${e.message}</div>`;
+  } catch(e) {
+    alertEl.innerHTML = `<div class="alert error">${e.message}</div>`;
   }
-  document.getElementById('auth-btn').textContent = isLogin ? 'Sign In' : 'Create Account';
-  document.getElementById('auth-btn').classList.remove('loading');
+  btn.textContent = isLoginMode ? 'Sign In' : 'Create Account';
+  btn.classList.remove('disabled');
 }
 
-function showApp(){
-  document.getElementById('auth-wrapper').classList.remove('active');
-  document.getElementById('app-wrapper').style.display='flex';
+function showApp() {
+  document.getElementById('auth-screen').classList.remove('show');
   const user = getUser();
-  if(user) document.getElementById('sidebar-email').textContent = user.email||'';
-  loadDashboard();
+  if (user) document.getElementById('user-email-display').textContent = user.email || '';
+  goTo('dashboard');
 }
 
-function showAuth(){
-  document.getElementById('auth-wrapper').classList.add('active');
-  document.getElementById('app-wrapper').style.display='none';
+function showAuth() {
+  document.getElementById('auth-screen').classList.add('show');
 }
 
-function logout(){
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+function doLogout() {
+  localStorage.removeItem('biv_token');
+  localStorage.removeItem('biv_user');
   showAuth();
 }
 
-function showPage(name, linkEl){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('#sidebar nav a').forEach(a=>a.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  if(linkEl) linkEl.classList.add('active');
-  if(name==='dashboard') loadDashboard();
-  if(name==='identities') loadIdentities();
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
 }
 
-async function loadDashboard(){
-  try{
-    const r = await fetch(API+'/api/identities',{headers:{'Authorization':'Bearer '+getToken()}});
-    const data = await r.json();
-    const list = data.identities || data;
-    document.getElementById('stat-total').textContent = list.length;
-    document.getElementById('stat-active').textContent = list.filter(i=>i.status==='ACTIVE').length;
-    document.getElementById('stat-revoked').textContent = list.filter(i=>i.status==='REVOKED').length;
-    const recent = list.slice(-5).reverse();
-    document.getElementById('recent-tbody').innerHTML = recent.map(i=>`
+/* ── NAVIGATION ── */
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+  if (page === 'dashboard')   loadDashboard();
+  if (page === 'identities')  loadIdentities();
+  // close sidebar on mobile
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+/* ── DASHBOARD ── */
+async function loadDashboard() {
+  try {
+    const r = await fetch(API + '/api/identities', { headers: { 'Authorization': 'Bearer ' + getToken() } });
+    const d = await r.json();
+    const list = Array.isArray(d) ? d : (d.identities || []);
+    document.getElementById('s-total').textContent   = list.length;
+    document.getElementById('s-active').textContent  = list.filter(i => i.status === 'ACTIVE').length;
+    document.getElementById('s-revoked').textContent = list.filter(i => i.status === 'REVOKED').length;
+    const recent = [...list].reverse().slice(0, 5);
+    document.getElementById('recent-tbody').innerHTML = recent.length ? recent.map(i => `
       <tr>
-        <td>${i.identity_id||'–'}</td>
-        <td>${i.local_identifier||'–'}</td>
-        <td><span class="badge ${i.status==='ACTIVE'?'active':'revoked'}">${i.status}</span></td>
-        <td>${i.created_at?i.created_at.split('T')[0]:''}</td>
-      </tr>`).join('');
-  } catch(e){ console.error(e); }
+        <td>${i.identity_id || '–'}</td>
+        <td>${i.local_identifier || '–'}</td>
+        <td><span class="badge ${i.status === 'ACTIVE' ? 'active' : 'revoked'}">${i.status}</span></td>
+        <td>${fmtDate(i.created_at)}</td>
+      </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;padding:20px;color:#94a3b8">No identities registered yet</td></tr>';
+  } catch(e) {
+    document.getElementById('recent-tbody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:20px">Failed to load data</td></tr>';
+  }
 }
 
-async function loadIdentities(){
+/* ── ALL IDENTITIES ── */
+async function loadIdentities() {
   const tbody = document.getElementById('identities-tbody');
-  tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">Loading...</td></tr>';
-  try{
-    const r = await fetch(API+'/api/identities',{headers:{'Authorization':'Bearer '+getToken()}});
-    const data = await r.json();
-    const list = data.identities || data;
-    tbody.innerHTML = list.map(i=>`
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#94a3b8">Loading...</td></tr>';
+  try {
+    const r = await fetch(API + '/api/identities', { headers: { 'Authorization': 'Bearer ' + getToken() } });
+    const d = await r.json();
+    const list = Array.isArray(d) ? d : (d.identities || []);
+    if (!list.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#94a3b8">No identities registered yet</td></tr>';
+      return;
+    }
+    tbody.innerHTML = [...list].reverse().map(i => `
       <tr>
-        <td>${i.identity_id||'–'}</td>
-        <td>${i.local_identifier||'–'}</td>
-        <td style="font-family:monospace;font-size:12px">${i.blockchain_identity_hash?(i.blockchain_identity_hash.substring(0,16)+'...'):'–'}</td>
-        <td style="font-family:monospace;font-size:12px">${i.blockchain_transaction_id?(i.blockchain_transaction_id.substring(0,16)+'...'):'–'}</td>
-        <td><span class="badge ${i.status==='ACTIVE'?'active':'revoked'}">${i.status}</span></td>
-        <td>${i.created_at?i.created_at.split('T')[0]:''}</td>
-        <td style="display:flex;gap:6px">
-          <button class="btn btn-blue" onclick="viewIdentity(${i.identity_id})">View</button>
-          ${i.status==='ACTIVE'?`<button class="btn btn-red" onclick="revokeIdentity(${i.identity_id})">Revoke</button>`:''}
+        <td>${i.identity_id || '–'}</td>
+        <td>${i.local_identifier || '–'}</td>
+        <td class="hash-short">${shorten(i.blockchain_identity_hash)}</td>
+        <td class="hash-short">${shorten(i.blockchain_transaction_id)}</td>
+        <td><span class="badge ${i.status === 'ACTIVE' ? 'active' : 'revoked'}">${i.status}</span></td>
+        <td>${fmtDate(i.created_at)}</td>
+        <td class="actions">
+          <button class="btn btn-blue" onclick="loadDetail(${i.identity_id})">View</button>
+          ${i.status === 'ACTIVE' ? `<button class="btn btn-red" onclick="doRevoke(${i.identity_id})">Revoke</button>` : ''}
         </td>
       </tr>`).join('');
-  } catch(e){
-    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#ef4444">Failed to load identities</td></tr>';
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:32px">Failed to load identities. Please try again.</td></tr>';
   }
 }
 
-async function viewIdentity(id){
-  showPage('identity-detail', null);
-  const card = document.getElementById('detail-card');
-  card.innerHTML='<p style="color:#94a3b8">Loading...</p>';
-  document.getElementById('detail-qr-card').style.display='none';
-  try{
-    const r = await fetch(API+'/api/identities/'+id,{headers:{'Authorization':'Bearer '+getToken()}});
-    const i = await r.json();
-    const identity = i.identity || i;
-    card.innerHTML=`
-      <h3 style="margin-bottom:16px;font-size:16px">Identity #${identity.identity_id}</h3>
-      <div class="info-row"><span class="info-label">NIN</span><span class="info-val">${identity.local_identifier||'–'}</span></div>
-      <div class="info-row"><span class="info-label">Status</span><span><span class="badge ${identity.status==='ACTIVE'?'active':'revoked'}">${identity.status}</span></span></div>
-      <div class="info-row"><span class="info-label">Transaction ID</span><span class="info-val">${identity.blockchain_transaction_id||'–'}</span></div>
-      <div class="info-row"><span class="info-label">Identity Hash</span><span class="info-val">${identity.blockchain_identity_hash||'–'}</span></div>
-      <div class="info-row"><span class="info-label">Block Index</span><span class="info-val">${identity.blockchain_block_index??'–'}</span></div>
-      <div class="info-row"><span class="info-label">Block Hash</span><span class="info-val">${identity.blockchain_block_hash||'–'}</span></div>
-      <div class="info-row"><span class="info-label">Registered</span><span class="info-val">${identity.created_at||'–'}</span></div>
-      ${identity.status==='ACTIVE'?`<button class="btn btn-red" style="margin-top:12px" onclick="revokeIdentity(${identity.identity_id})">Revoke Identity</button>`:''}
+/* ── IDENTITY DETAIL ── */
+async function loadDetail(id) {
+  goTo('detail');
+  const card   = document.getElementById('detail-card');
+  const qrCard = document.getElementById('detail-qr-card');
+  card.innerHTML   = '<p style="color:#94a3b8">Loading...</p>';
+  qrCard.innerHTML = '<div style="color:#94a3b8;font-size:13px">Loading QR code...</div>';
+
+  try {
+    const r = await fetch(API + '/api/identities/' + id, {
+      headers: { 'Authorization': 'Bearer ' + getToken() }
+    });
+    if (!r.ok) throw new Error('Server returned ' + r.status);
+    const raw = await r.json();
+
+    // Handle both flat response and wrapped response
+    const i = raw.identity || raw;
+
+    card.innerHTML = `
+      <h3 style="font-size:16px;font-weight:700;color:#0f172a;margin-bottom:20px">Identity #${i.identity_id}</h3>
+      <div class="info-item"><div class="info-label">NIN</div><div class="info-val normal">${i.local_identifier || '–'}</div></div>
+      <div class="info-item"><div class="info-label">Status</div><div><span class="badge ${i.status === 'ACTIVE' ? 'active' : 'revoked'}">${i.status || '–'}</span></div></div>
+      <div class="info-item"><div class="info-label">Transaction ID</div><div class="info-val">${i.blockchain_transaction_id || '–'}</div></div>
+      <div class="info-item"><div class="info-label">Identity Hash</div><div class="info-val">${i.blockchain_identity_hash || '–'}</div></div>
+      <div class="info-item"><div class="info-label">Block Index</div><div class="info-val normal">${i.blockchain_block_index ?? '–'}</div></div>
+      <div class="info-item"><div class="info-label">Block Hash</div><div class="info-val">${i.blockchain_block_hash || '–'}</div></div>
+      <div class="info-item"><div class="info-label">Date Registered</div><div class="info-val normal">${fmtDate(i.created_at)}</div></div>
+      ${i.status === 'ACTIVE' ? `<button class="btn btn-red" style="margin-top:16px;width:100%" onclick="doRevoke(${i.identity_id})">Revoke This Identity</button>` : ''}
     `;
-    if(identity.qr_code_data){
-      document.getElementById('detail-qr-card').style.display='block';
-      document.getElementById('qr-detail-container').innerHTML='';
-      new QRCode(document.getElementById('qr-detail-container'),{text:identity.qr_code_data,width:180,height:180});
-    }
-  } catch(e){ card.innerHTML='<p style="color:#ef4444">Failed to load identity</p>'; }
-}
 
-async function revokeIdentity(id){
-  if(!confirm('Are you sure you want to revoke this identity?')) return;
-  try{
-    const r = await fetch(API+'/api/identities/'+id+'/revoke',{method:'PATCH',headers:{'Authorization':'Bearer '+getToken()}});
-    if(r.ok){ alert('Identity revoked successfully'); loadIdentities(); }
-    else{ alert('Failed to revoke identity'); }
-  } catch(e){ alert('Error: '+e.message); }
-}
-
-async function registerIdentity(){
-  const nin = document.getElementById('reg-nin').value.trim();
-  const fullName = document.getElementById('reg-name').value.trim();
-  const dob = document.getElementById('reg-dob').value;
-  const alertEl = document.getElementById('reg-alert');
-  if(!nin||!fullName||!dob){ alertEl.innerHTML='<div class="alert error">Please fill all fields</div>'; return; }
-  document.getElementById('reg-btn').textContent='Registering...';
-  document.getElementById('reg-btn').classList.add('loading');
-  try{
-    const r = await fetch(API+'/api/identities',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()},body:JSON.stringify({nin,fullName,dob})});
-    const d = await r.json();
-    if(!r.ok) throw new Error(d.message||'Registration failed');
-    const identity = d.identity || d;
-    document.getElementById('res-txid').textContent = identity.blockchain_transaction_id||'–';
-    document.getElementById('res-hash').textContent = identity.blockchain_identity_hash||'–';
-    document.getElementById('qr-container').innerHTML='';
-    if(identity.qr_code_data) new QRCode(document.getElementById('qr-container'),{text:identity.qr_code_data,width:160,height:160});
-    document.getElementById('reg-success').style.display='block';
-    alertEl.innerHTML='';
-  } catch(e){
-    alertEl.innerHTML=`<div class="alert error">${e.message}</div>`;
-  }
-  document.getElementById('reg-btn').textContent='Register Identity';
-  document.getElementById('reg-btn').classList.remove('loading');
-}
-
-async function verifyIdentity(){
-  const payload = document.getElementById('verify-input').value.trim();
-  const resultEl = document.getElementById('verify-result');
-  if(!payload){ resultEl.innerHTML='<div class="alert error">Please enter a payload</div>'; return; }
-  document.getElementById('verify-btn').textContent='Verifying...';
-  document.getElementById('verify-btn').classList.add('loading');
-  try{
-    const r = await fetch(API+'/api/identities/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({payload})});
-    const d = await r.json();
-    if(d.result==='SUCCESS'){
-      resultEl.innerHTML=`<div class="verify-result success-r"><div class="icon">✅</div><h2>Identity Verified</h2><p>Status: ${d.status}</p><p>Registered: ${d.registeredAt||''}</p></div>`;
-    } else if(d.result==='REVOKED'){
-      resultEl.innerHTML=`<div class="verify-result revoked-r"><div class="icon">❌</div><h2>Identity Revoked</h2><p>This identity has been revoked.</p></div>`;
+    // Render QR code
+    qrCard.innerHTML = '<div style="font-size:13px;font-weight:600;color:#0f172a;margin-bottom:16px">QR Code</div><div id="qr-render"></div>';
+    if (i.qr_code_data) {
+      // qr_code_data is a data URL — render as image directly
+      const img = document.createElement('img');
+      img.src = i.qr_code_data;
+      img.style.cssText = 'width:200px;height:200px;border:1px solid #e2e8f0;border-radius:8px';
+      document.getElementById('qr-render').appendChild(img);
+    } else if (i.blockchain_transaction_id && i.identity_id) {
+      // Generate QR from payload as fallback
+      new QRCode(document.getElementById('qr-render'), {
+        text: `TXID:${i.blockchain_transaction_id}|RID:${i.identity_id}`,
+        width: 200, height: 200
+      });
     } else {
-      resultEl.innerHTML=`<div class="verify-result notfound-r"><div class="icon">⚠️</div><h2>Identity Not Found</h2><p>No record found on the blockchain.</p></div>`;
+      document.getElementById('qr-render').innerHTML = '<p style="color:#94a3b8;font-size:13px">QR code not available</p>';
     }
-  } catch(e){
-    resultEl.innerHTML=`<div class="alert error">Verification failed: ${e.message}</div>`;
+
+  } catch(e) {
+    card.innerHTML = `<div class="alert error">Failed to load identity details: ${e.message}</div>`;
+    qrCard.innerHTML = '';
   }
-  document.getElementById('verify-btn').textContent='Verify';
-  document.getElementById('verify-btn').classList.remove('loading');
 }
 
-// Init
-window.onload = function(){
-  if(getToken()){
+/* ── REGISTER ── */
+async function doRegister() {
+  const nin      = document.getElementById('r-nin').value.trim();
+  const fullName = document.getElementById('r-name').value.trim();
+  const dob      = document.getElementById('r-dob').value;
+  const alertEl  = document.getElementById('reg-alert');
+
+  if (!nin || !fullName || !dob) {
+    alertEl.innerHTML = '<div class="alert error">Please fill in all three fields.</div>'; return;
+  }
+
+  const btn = document.getElementById('reg-btn');
+  btn.textContent = 'Registering...'; btn.classList.add('disabled');
+  alertEl.innerHTML = '';
+
+  try {
+    const r = await fetch(API + '/api/identities', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ nin, fullName, dob })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.message || 'Registration failed.');
+
+    const i = d.identity || d;
+    document.getElementById('res-txid').textContent  = i.blockchain_transaction_id || '–';
+    document.getElementById('res-hash').textContent  = i.blockchain_identity_hash  || '–';
+    document.getElementById('res-block').textContent = i.blockchain_block_index ?? '–';
+
+    // Render QR code
+    const qrDiv = document.getElementById('reg-qr');
+    qrDiv.innerHTML = '';
+    if (i.qr_code_data) {
+      const img = document.createElement('img');
+      img.src = i.qr_code_data;
+      img.style.cssText = 'width:180px;height:180px;border:1px solid #bbf7d0;border-radius:8px';
+      qrDiv.appendChild(img);
+    } else if (i.blockchain_transaction_id && i.identity_id) {
+      new QRCode(qrDiv, { text: `TXID:${i.blockchain_transaction_id}|RID:${i.identity_id}`, width: 180, height: 180 });
+    }
+
+    document.getElementById('reg-result').style.display = 'block';
+    // Clear form
+    document.getElementById('r-nin').value = '';
+    document.getElementById('r-name').value = '';
+    document.getElementById('r-dob').value = '';
+
+  } catch(e) {
+    alertEl.innerHTML = `<div class="alert error">${e.message}</div>`;
+  }
+  btn.textContent = 'Register Identity'; btn.classList.remove('disabled');
+}
+
+/* ── REVOKE ── */
+async function doRevoke(id) {
+  if (!confirm('Are you sure you want to revoke this identity? This action cannot be undone.')) return;
+  try {
+    const r = await fetch(API + '/api/identities/' + id + '/revoke', {
+      method: 'PATCH', headers: { 'Authorization': 'Bearer ' + getToken() }
+    });
+    if (r.ok) {
+      alert('Identity has been revoked successfully.');
+      loadIdentities();
+      goTo('identities');
+    } else {
+      const d = await r.json();
+      alert('Revocation failed: ' + (d.message || 'Unknown error'));
+    }
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+/* ── VERIFY ── */
+async function doVerify() {
+  const payload  = document.getElementById('v-input').value.trim();
+  const resultEl = document.getElementById('verify-result');
+  if (!payload) {
+    resultEl.innerHTML = '<div class="alert error" style="margin-top:16px">Please enter a QR payload.</div>'; return;
+  }
+  const btn = document.getElementById('verify-btn');
+  btn.textContent = 'Verifying...'; btn.classList.add('disabled');
+  resultEl.innerHTML = '';
+
+  try {
+    const r = await fetch(API + '/api/identities/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ payload })
+    });
+    const d = await r.json();
+    if (d.result === 'SUCCESS') {
+      resultEl.innerHTML = `
+        <div class="verify-result vr-success">
+          <div class="icon">✅</div>
+          <h2>Identity Verified</h2>
+          <p>Status: <strong>${d.status}</strong></p>
+          <p style="margin-top:6px">Registered: ${fmtDate(d.registeredAt)}</p>
+        </div>`;
+    } else if (d.result === 'REVOKED') {
+      resultEl.innerHTML = `
+        <div class="verify-result vr-revoked">
+          <div class="icon">❌</div>
+          <h2>Identity Revoked</h2>
+          <p>This identity has been revoked and is no longer valid.</p>
+        </div>`;
+    } else {
+      resultEl.innerHTML = `
+        <div class="verify-result vr-notfound">
+          <div class="icon">⚠️</div>
+          <h2>Identity Not Found</h2>
+          <p>No matching record was found on the blockchain.</p>
+        </div>`;
+    }
+  } catch(e) {
+    resultEl.innerHTML = `<div class="alert error" style="margin-top:16px">Verification failed: ${e.message}</div>`;
+  }
+  btn.textContent = '🔍 Verify Identity'; btn.classList.remove('disabled');
+}
+
+/* ── UTILITIES ── */
+function shorten(str) {
+  if (!str) return '–';
+  return str.length > 18 ? str.substring(0, 16) + '...' : str;
+}
+
+function fmtDate(str) {
+  if (!str) return '–';
+  try { return new Date(str).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }); }
+  catch(e) { return str; }
+}
+
+/* ── INIT ── */
+window.onload = function() {
+  const token = getToken();
+  if (token) {
     showApp();
   } else {
     showAuth();
   }
+  // Enter key on auth inputs
+  document.getElementById('inp-password').addEventListener('keypress', e => {
+    if (e.key === 'Enter') doAuth();
+  });
+  document.getElementById('v-input').addEventListener('keypress', e => {
+    if (e.key === 'Enter') doVerify();
+  });
 };
 </script>
 </body>
